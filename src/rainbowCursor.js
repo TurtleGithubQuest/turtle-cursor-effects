@@ -7,6 +7,7 @@ export function rainbowCursor(options) {
   let cursor = { x: width / 2, y: width / 2 };
   let particles = [];
   let canvas, context, animationFrame;
+  let lastTime = 0;
 
   const totalParticles = options?.length || 20;
   const colors = options?.colors || [
@@ -62,7 +63,7 @@ export function rainbowCursor(options) {
     }
 
     bindEvents();
-    loop();
+    requestAnimationFrame(loop);
   }
 
   // Bind events that are needed
@@ -106,7 +107,7 @@ export function rainbowCursor(options) {
     particles.push(new Particle(x, y, image));
   }
 
-  function updateParticles() {
+  function updateParticles(deltaTime) {
     context.clearRect(0, 0, width, height);
     context.lineJoin = "round";
 
@@ -123,8 +124,8 @@ export function rainbowCursor(options) {
 
       particleSets.push({ x: x, y: y });
 
-      x += (nextParticle.position.x - particle.position.x) * 0.4;
-      y += (nextParticle.position.y - particle.position.y) * 0.4;
+      x += (nextParticle.position.x - particle.position.x) * 0.4 / deltaTime;
+      y += (nextParticle.position.y - particle.position.y) * 0.4 / deltaTime;
     });
 
     colors.forEach((color, index) => {
@@ -150,8 +151,10 @@ export function rainbowCursor(options) {
     });
   }
 
-  function loop() {
-    updateParticles();
+  function loop(time) {
+    const deltaTime = Math.min(100, time - lastTime) / (1000 / 60);
+    lastTime = time;
+    updateParticles(deltaTime);
     animationFrame = requestAnimationFrame(loop);
   }
 

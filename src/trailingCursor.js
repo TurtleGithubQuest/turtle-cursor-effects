@@ -10,6 +10,7 @@ export function trailingCursor(options) {
   let cursor = { x: width / 2, y: width / 2 };
   let particles = [];
   let canvas, context, animationFrame;
+  let lastTime = 0;
 
   const totalParticles = options?.particles || 15;
   const rate = options?.rate || 0.4;
@@ -60,7 +61,7 @@ export function trailingCursor(options) {
     }
 
     bindEvents();
-    loop();
+    requestAnimationFrame(loop);
   }
 
   // Bind events that are needed
@@ -104,7 +105,7 @@ export function trailingCursor(options) {
     particles.push(new Particle(x, y, image));
   }
 
-  function updateParticles() {
+  function updateParticles(deltaTime) {
     context.clearRect(0, 0, width, height);
 
     let x = cursor.x;
@@ -121,8 +122,10 @@ export function trailingCursor(options) {
     });
   }
 
-  function loop() {
-    updateParticles();
+  function loop(time) {
+    const deltaTime = Math.min(100, time - lastTime) / (1000 / 60);
+    lastTime = time;
+    updateParticles(deltaTime);
     animationFrame = requestAnimationFrame(loop);
   }
 
@@ -131,7 +134,7 @@ export function trailingCursor(options) {
     cancelAnimationFrame(animationFrame);
     element.removeEventListener("mousemove", onMouseMove);
     window.addEventListener("resize", onWindowResize);
-  };
+  }
 
   /**
    * Particles

@@ -10,6 +10,7 @@ export function bubbleCursor(options) {
 
   let canvImages = [];
 
+  let lastTime = 0;
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   );
@@ -52,7 +53,7 @@ export function bubbleCursor(options) {
     }
 
     bindEvents();
-    loop();
+    requestAnimationFrame(loop);
   }
 
   // Bind events that are needed
@@ -106,7 +107,7 @@ export function bubbleCursor(options) {
   }
 
   function updateParticles() {
-    if (particles.length == 0) {
+    if (particles.length === 0) {
       return;
     }
 
@@ -114,7 +115,7 @@ export function bubbleCursor(options) {
 
     // Update
     for (let i = 0; i < particles.length; i++) {
-      particles[i].update(context);
+      particles[i].update(context, deltaTime);
     }
 
     // Remove dead particles
@@ -124,13 +125,15 @@ export function bubbleCursor(options) {
       }
     }
 
-    if (particles.length == 0) {
+    if (particles.length === 0) {
       context.clearRect(0, 0, width, height);
     }
   }
 
-  function loop() {
-    updateParticles();
+  function loop(time) {
+    const deltaTime = Math.min(100, time - lastTime) / (1000 / 60);
+    lastTime = time;
+    updateParticles(deltaTime);
     animationFrame = requestAnimationFrame(loop);
   }
 
@@ -141,7 +144,7 @@ export function bubbleCursor(options) {
     element.removeEventListener("touchmove", onTouchMove);
     element.removeEventListener("touchstart", onTouchMove);
     window.addEventListener("resize", onWindowResize);
-  };
+  }
 
   function Particle(x, y, canvasItem) {
     const lifeSpan = Math.floor(Math.random() * 60 + 60);
@@ -156,13 +159,12 @@ export function bubbleCursor(options) {
 
     this.baseDimension = 4;
 
-    this.update = function (context) {
-      this.position.x += this.velocity.x;
-      this.position.y += this.velocity.y;
-      this.velocity.x += ((Math.random() < 0.5 ? -1 : 1) * 2) / 75;
-      this.velocity.y -= Math.random() / 600;
-      this.lifeSpan--;
-
+    this.update = function(context, deltaTime) {
+      this.position.x += this.velocity.x * deltaTime;
+      this.position.y += this.velocity.y * deltaTime;
+      this.velocity.x += ((Math.random() < 0.5 ? -1 : 1) * 2) / 75 * deltaTime;
+      this.velocity.y -= Math.random() / 600 * deltaTime;
+      this.lifeSpan -= deltaTime;
       const scale =
         0.2 + (this.initialLifeSpan - this.lifeSpan) / this.initialLifeSpan;
 

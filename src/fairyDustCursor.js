@@ -14,6 +14,7 @@ export function fairyDustCursor(options) {
   const particles = [];
   const canvImages = [];
   let canvas, context, animationFrame;
+  let lastTime = 0;
 
   const char = "*";
 
@@ -85,7 +86,7 @@ export function fairyDustCursor(options) {
     });
 
     bindEvents();
-    loop();
+    requestAnimationFrame(loop);
   }
 
   // Bind events that are needed
@@ -154,16 +155,15 @@ export function fairyDustCursor(options) {
     particles.push(new Particle(x, y, color));
   }
 
-  function updateParticles() {
-    if (particles.length == 0) {
+  function updateParticles(deltaTime) {
+    if (particles.length === 0) {
       return;
     }
-
     context.clearRect(0, 0, width, height);
 
     // Update
     for (let i = 0; i < particles.length; i++) {
-      particles[i].update(context);
+      particles[i].update(context, deltaTime);
     }
 
     // Remove dead particles
@@ -173,13 +173,15 @@ export function fairyDustCursor(options) {
       }
     }
 
-    if (particles.length == 0) {
+    if (particles.length === 0) {
       context.clearRect(0, 0, width, height);
     }
   }
 
-  function loop() {
-    updateParticles();
+  function loop(time) {
+    const deltaTime = Math.min(100, time - lastTime) / (1000 / 60);
+    lastTime = time;
+    updateParticles(deltaTime);
     animationFrame = requestAnimationFrame(loop);
   }
 
@@ -190,7 +192,7 @@ export function fairyDustCursor(options) {
     element.removeEventListener("touchmove", onTouchMove);
     element.removeEventListener("touchstart", onTouchMove);
     window.addEventListener("resize", onWindowResize);
-  };
+  }
 
   function Particle(x, y, canvasItem) {
     const lifeSpan = Math.floor(Math.random() * 30 + 60);
@@ -203,12 +205,12 @@ export function fairyDustCursor(options) {
     this.position = { x: x, y: y };
     this.canv = canvasItem;
 
-    this.update = function (context) {
-      this.position.x += this.velocity.x;
-      this.position.y += this.velocity.y;
-      this.lifeSpan--;
+    this.update = function (context, deltaTime) {
+      this.position.x += this.velocity.x * deltaTime;
+      this.position.y += this.velocity.y * deltaTime;
+      this.lifeSpan -= deltaTime;
 
-      this.velocity.y += 0.02;
+      this.velocity.y += 0.02 * deltaTime;
 
       const scale = Math.max(this.lifeSpan / this.initialLifeSpan, 0);
 

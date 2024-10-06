@@ -21,6 +21,7 @@ export function followingDotCursor(options) {
       init();
     }
   };
+  let lastTime = 0;
 
   function init() {
     // Don't show the cursor trail if the user has prefers-reduced-motion enabled
@@ -50,7 +51,7 @@ export function followingDotCursor(options) {
     }
 
     bindEvents();
-    loop();
+    requestAnimationFrame(loop);
   }
 
   // Bind events that are needed
@@ -83,14 +84,16 @@ export function followingDotCursor(options) {
     }
   }
 
-  function updateDot() {
+  function updateDot(deltaTime) {
     context.clearRect(0, 0, width, height);
 
-    dot.moveTowards(cursor.x, cursor.y, context);
+    dot.moveTowards(cursor.x, cursor.y, context, deltaTime);
   }
 
-  function loop() {
-    updateDot();
+  function loop(time) {
+    const deltaTime = Math.min(100, time - lastTime) / (1000 / 60);
+    lastTime = time;
+    updateDot(deltaTime);
     animationFrame = requestAnimationFrame(loop);
   }
 
@@ -99,16 +102,16 @@ export function followingDotCursor(options) {
     cancelAnimationFrame(loop);
     element.removeEventListener("mousemove", onMouseMove);
     window.addEventListener("resize", onWindowResize);
-  };
+  }
 
   function Dot(x, y, width, lag) {
     this.position = { x: x, y: y };
     this.width = width;
     this.lag = lag;
 
-    this.moveTowards = function (x, y, context) {
-      this.position.x += (x - this.position.x) / this.lag;
-      this.position.y += (y - this.position.y) / this.lag;
+    this.moveTowards = function (x, y, context, deltaTime) {
+      this.position.x += (x - this.position.x) / (this.lag / deltaTime);
+      this.position.y += (y - this.position.y) / (this.lag / deltaTime);
 
       context.fillStyle = color;
       context.beginPath();
