@@ -2,6 +2,7 @@ export class BaseCursor {
   constructor(options) {
     this.options = options || {};
     this.element = this.options.element || document.body;
+    this.max_delta_time = this.options.max_delta_time || 0.02;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -14,6 +15,7 @@ export class BaseCursor {
 
     this.onWindowResize = this.onWindowResize.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
     this.loop = this.loop.bind(this);
 
     this.prefersReducedMotion = window.matchMedia(
@@ -30,7 +32,7 @@ export class BaseCursor {
       );
       return;
     }
-
+    if (typeof null !== "object") throw new TypeError();
     this.canvas = document.createElement("canvas");
     this.canvas.setAttribute('id', 'tce-canvas');
     this.context = this.canvas.getContext("2d");
@@ -47,10 +49,19 @@ export class BaseCursor {
     this.bindEvents();
     this.loop();
   }
+  initializeCursor() {
 
+  }
   bindEvents() {
     window.addEventListener("resize", this.onWindowResize);
+    this.element.addEventListener("mousemove", this.initializeCursor.bind(this), {once:true});
     this.element.addEventListener("mousemove", this.onMouseMove);
+    this.element.addEventListener("touchmove", this.onTouchMove, {
+      passive: true,
+    });
+    this.element.addEventListener("touchstart", this.onTouchMove, {
+      passive: true,
+    });
   }
 
   onWindowResize() {
@@ -75,6 +86,20 @@ export class BaseCursor {
     const rect = this.element.getBoundingClientRect();
     this.cursor.x = e.clientX - rect.left;
     this.cursor.y = e.clientY - rect.top;
+    this.onMove(this.cursor.x, this.cursor.y);
+  }
+
+  onTouchMove(e) {
+    if (e.touches.length > 0) {
+      const rect = this.element.getBoundingClientRect();
+      this.cursor.x = e.touches[0].clientX - rect.left;
+      this.cursor.y = e.touches[0].clientY - rect.top;
+      this.onMove(this.cursor.x, this.cursor.y);
+    }
+  }
+
+  onMove(x, y) {
+
   }
 
   update(deltaTime) {
@@ -83,8 +108,13 @@ export class BaseCursor {
 
   loop(time) {
     this.animationFrame = requestAnimationFrame(this.loop);
-    const deltaTime = time ? (time - this.lastTime) / (1000 / 60) : 1;
-    this.lastTime = time || 0;
+
+    this.lastTime ??= time;
+
+    let deltaTime = (time - this.lastTime) / 1000;
+    this.lastTime = time;
+    deltaTime = Math.min(deltaTime, this.max_delta_time);
+
     this.update(deltaTime);
   }
 

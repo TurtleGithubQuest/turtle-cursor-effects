@@ -1,6 +1,6 @@
 import { BaseCursor } from '../BaseCursor.js';
 
-export class BubbleCursor extends BaseCursor {
+export class Bubble extends BaseCursor {
   constructor(options) {
     super(options);
     this.particles = [];
