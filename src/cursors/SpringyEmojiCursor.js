@@ -1,4 +1,4 @@
-import { BaseCursor } from './BaseCursor.js';
+import { BaseCursor } from '../BaseCursor.js';
 
 export class SpringyEmojiCursor extends BaseCursor {
   constructor(options) {

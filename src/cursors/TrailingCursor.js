@@ -1,4 +1,4 @@
-import { BaseCursor } from './BaseCursor.js';
+import { BaseCursor } from '../BaseCursor.js';
 
 export class TrailingCursor extends BaseCursor {
   constructor(options) {
@@ -50,77 +50,6 @@ export class TrailingCursor extends BaseCursor {
     this.particles.forEach((particle, index, particles) => {
       let nextParticle = particles[index + 1] || particles[0];
 
-      particle.position.x = x;
-      particle.position.y = y;
-      particle.move(this.context);
-      x += (nextParticle.position.x - particle.position.x) * this.rate;
-      y += (nextParticle.position.y - particle.position.y) * this.rate;
-    });
-  }
-
-  destroy() {
-    super.destroy();
-    window.removeEventListener("resize", this.onWindowResize.bind(this));
-  }
-}
-
-class Particle {
-  constructor(x, y, image) {
-    this.position = { x: x, y: y };
-    this.image = image;
-  }
-
-  move(context) {
-    context.drawImage(this.image, this.position.x, this.position.y);
-  }
-}
-import { BaseCursor } from './BaseCursor.js';
-
-export class TrailingCursor extends BaseCursor {
-  constructor(options) {
-    super(options);
-    this.totalParticles = options?.particles || 15;
-    this.rate = options?.rate || 0.4;
-    this.baseImageSrc =
-      options?.baseImageSrc ||
-      "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAATCAYAAACk9eypAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAhGVYSWZNTQAq
-    this.cursorsInitted = false;
-    this.particles = [];
-    this.baseImage = new Image();
-    this.baseImage.src = this.baseImageSrc;
-    this.lastTime = 0;
-  }
-
-  bindEvents() {
-    super.bindEvents();
-    this.element.addEventListener("mousemove", this.onMouseMove.bind(this));
-    window.addEventListener("resize", this.onWindowResize.bind(this));
-  }
-
-  onMouseMove(e) {
-    super.onMouseMove(e);
-    if (!this.cursorsInitted) {
-      this.cursorsInitted = true;
-      for (let i = 0; i < this.totalParticles; i++) {
-        this.addParticle(this.cursor.x, this.cursor.y, this.baseImage);
-      }
-    }
-  }
-
-  onWindowResize(e) {
-    super.onWindowResize(e);
-  }
-
-  addParticle(x, y, image) {
-    this.particles.push(new Particle(x, y, image));
-  }
-
-  update(deltaTime) {
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    let x = this.cursor.x;
-    let y = this.cursor.y;
-    this.particles.forEach((particle, index, particles) => {
-      let nextParticle = particles[index + 1] || particles[0];
       particle.position.x = x;
       particle.position.y = y;
       particle.move(this.context);
