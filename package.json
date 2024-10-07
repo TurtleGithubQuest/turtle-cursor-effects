@@ -1,17 +1,19 @@
 {
-  "name": "cursor-effects",
+  "name": "turtle-cursor-effects",
   "type": "module",
   "description": "Old-school cursor effects for your browser built in modern JavaScript.",
-  "version": "1.0.15",
+  "version": "1.0.15b",
   "main": "./dist/cjs.cjs",
   "module": "./dist/esm.js",
+  "browser": "./dist/turtle-cursor-effects.umd.js",
   "types": "./types.d.ts",
   "exports": {
     "./package.json": "./package.json",
     ".": {
       "types": "./types.d.ts",
       "require": "./dist/cjs.cjs",
-      "import": "./dist/esm.js"
+      "import": "./dist/esm.js",
+      "browser": "./dist/turtle-cursor-effects.umd.js"
     }
   },
   "files": ["dist", "types.d.ts"],
@@ -21,14 +23,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tholman/cursor-effects.git"
+    "url": "git+https://github.com/TurtleGithubQuest/turtle-cursor-effects.git"
   },
   "author": "tholman",
+  "contributors": [
+    "turtle"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tholman/cursor-effects/issues"
+    "url": "https://github.com/TurtleGithubQuest/turtle-cursor-effects/issues"
   },
-  "homepage": "https://github.com/tholman/cursor-effects#readme",
+  "homepage": "https://github.com/TurtleGithubQuest/turtle-cursor-effects#readme",
   "devDependencies": {
     "rollup": "^2.77.0",
     "rollup-plugin-terser": "^7.0.2"

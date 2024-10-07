@@ -1,12 +1,5 @@
-export * from './springyEmojiCursor.js';
-export * from './fairyDustCursor.js';
-export * from './snowflakeCursor.js';
-export * from './characterCursor.js';
-export * from './trailingCursor.js';
-export * from './followingDotCursor.js'
-export * from './bubbleCursor.js';
-export * from './emojiCursor.js';
-export * from './ghostCursor.js';
-export * from './rainbowCursor.js';
-export * from './clockCursor.js';
-export * from './textFlag.js';
+export { SpringyEmoji } from './cursors/SpringyEmoji.js';
+export { Trailing } from './cursors/Trailing.js';
+export { Bubble } from './cursors/Bubble.js';
+export { Rainbow } from './cursors/Rainbow.js';
+export { Dragon } from './cursors/Dragon.js';

@@ -16,6 +16,11 @@ export default {
       format: "iife",
       name: "cursoreffects",
     },
+    {
+      file: 'dist/turtle-cursor-effects.umd.js',
+      format: 'umd',
+      name: 'CursorEffects',
+    },
   ],
   plugins: [terser()],
 };
