@@ -3,6 +3,7 @@ export class BaseCursor {
     this.options = options || {};
     this.element = this.options.element || document.body;
     this.max_delta_time = this.options.max_delta_time || 0.02;
+    this.time_dilation = this.options?.time_dilation || 100;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -21,10 +22,15 @@ export class BaseCursor {
     this.prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     );
-
-    this.init();
+    if (this.options?.noConstruct !== true) {
+      this.construct();
+    }
   }
-
+  construct() {
+    this.init();
+    this.bindEvents();
+    this.loop();
+  }
   init() {
     if (this.prefersReducedMotion.matches) {
       console.log(
@@ -45,9 +51,6 @@ export class BaseCursor {
     this.canvas.height = this.element.clientHeight || this.height;
 
     this.element.appendChild(this.canvas);
-
-    this.bindEvents();
-    this.loop();
   }
   initializeCursor() {
 
@@ -114,8 +117,9 @@ export class BaseCursor {
     let deltaTime = (time - this.lastTime) / 1000;
     this.lastTime = time;
     deltaTime = Math.min(deltaTime, this.max_delta_time);
-
-    this.update(deltaTime);
+    if (!isNaN(deltaTime)) {
+      this.update(deltaTime*this.time_dilation);
+    }
   }
 
   destroy() {

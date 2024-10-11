@@ -3,6 +3,7 @@ import { BaseCursor } from '../BaseCursor.js';
 
 export class Rainbow extends BaseCursor {
   init() {
+    super.init();
     this.rawColors = this.options?.colors || [
       "#FE0000",
       "#FD8C00",
@@ -14,12 +15,10 @@ export class Rainbow extends BaseCursor {
     this.colors = this.rawColors.map(hex => this.hexToRGBObject(hex));
     this.size = this.options?.size || 3;
     this.particleCount = this.options?.particleCount || 750;
-    this.particleLifespan = this.options?.particleLifespan || 0.25;
+    this.particleLifespan = (this.options?.particleLifespan || .25) * this.time_dilation;
     this.particleSpacing = this.options?.particleSpacing || 1;
     this.particles = [];
     this.prevCursor = { x: this.cursor.x, y: this.cursor.y };
-
-    super.init();
   }
 
   update(deltaTime) {

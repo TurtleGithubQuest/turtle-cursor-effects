@@ -5,7 +5,6 @@ new cursoreffects.followingDotCursor({ element: document.querySelector("#followi
 new cursoreffects.emojiCursor({ element: document.querySelector("#emoji") })
 new cursoreffects.snowflakeCursor({ element: document.querySelector("#snowflake") })
 new cursoreffects.characterCursor({ element: document.querySelector("#character") })
-new cursoreffects.clockCursor({ element: document.querySelector("#clock") })
 new cursoreffects.textFlag({ element: document.querySelector("#textFlag"), text: 'Like & Subscribe' })
 */
 new cursoreffects.Trailing({ element: document.querySelector("#trailing")})
@@ -13,3 +12,4 @@ new cursoreffects.SpringyEmoji({ element: document.querySelector("#springs")})
 new cursoreffects.Rainbow({ element: document.querySelector("#rainbow")})
 new cursoreffects.Bubble({ element: document.querySelector("#bubbles") })
 new cursoreffects.Dragon({ element: document.querySelector("#dragon") })
+new cursoreffects.Clock({ element: document.querySelector("#clock") })

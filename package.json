@@ -36,7 +36,10 @@
   "homepage": "https://github.com/TurtleGithubQuest/turtle-cursor-effects#readme",
   "devDependencies": {
     "rollup": "^2.77.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-terser": "^7.0.2",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
+    "eslint": "latest"
   },
   "scripts": {
     "build": "rollup -c",

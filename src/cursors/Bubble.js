@@ -1,29 +1,10 @@
 import { BaseCursor } from '../BaseCursor.js';
 
 export class Bubble extends BaseCursor {
-  constructor(options) {
-    super(options);
+  init() {
+    super.init();
     this.particles = [];
     this.lastTime = 0;
-  }
-
-  bindEvents() {
-    super.bindEvents();
-    this.element.addEventListener("mousemove", this.onMouseMove.bind(this));
-    this.element.addEventListener("touchmove", this.onTouchMove.bind(this), {
-      passive: true,
-    });
-    this.element.addEventListener("touchstart", this.onTouchMove.bind(this), {
-      passive: true,
-    });
-    window.addEventListener("resize", this.onWindowResize.bind(this));
-  }
-
-  destroy() {
-    super.destroy();
-    this.element.removeEventListener("touchmove", this.onTouchMove.bind(this));
-    this.element.removeEventListener("touchstart", this.onTouchMove.bind(this));
-    window.removeEventListener("resize", this.onWindowResize.bind(this));
   }
 
   onMouseMove(e) {
@@ -52,12 +33,10 @@ export class Bubble extends BaseCursor {
 
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    // Update particles
     for (let i = 0; i < this.particles.length; i++) {
       this.particles[i].update(this.context, deltaTime);
     }
 
-    // Remove dead particles
     for (let i = this.particles.length - 1; i >= 0; i--) {
       if (this.particles[i].lifeSpan < 0) {
         this.particles.splice(i, 1);

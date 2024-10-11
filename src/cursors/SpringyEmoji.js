@@ -51,7 +51,6 @@ export class SpringyEmoji extends BaseCursor {
 
   update(deltaTime) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    deltaTime *= 100;
 
     const firstParticle = this.particles[0];
     if (!firstParticle) return;

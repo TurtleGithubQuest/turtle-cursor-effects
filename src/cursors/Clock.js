@@ -1,12 +1,12 @@
 import { BaseCursor } from '../BaseCursor.js';
 
 export class Clock extends BaseCursor {
-  constructor(options) {
-    super(options);
+  init() {
+    super.init();
     const date = new Date();
     this.day = date.getDate();
-    this.year = date.getYear() + 1900;
-    this.theDays = options?.theDays || [
+    this.year = date.getFullYear() + 1900;
+    this.theDays = this.options?.theDays || [
       "SUNDAY",
       "MONDAY",
       "TUESDAY",
@@ -15,7 +15,7 @@ export class Clock extends BaseCursor {
       "FRIDAY",
       "SATURDAY",
     ];
-    this.theMonths = options?.theMonths || [
+    this.theMonths = this.options?.theMonths || [
       "JANUARY",
       "FEBRUARY",
       "MARCH",
@@ -29,11 +29,12 @@ export class Clock extends BaseCursor {
       "NOVEMBER",
       "DECEMBER",
     ];
-    this.dateColor = options?.dateColor || "blue";
-    this.faceColor = options?.faceColor || "black";
-    this.secondsColor = options?.secondsColor || "red";
-    this.minutesColor = options?.minutesColor || "black";
-    this.hoursColor = options?.hoursColor || "black";
+    this.time_dilation = this.options?.time_dilation || 150;
+    this.dateColor = this.options?.dateColor || "blue";
+    this.faceColor = this.options?.faceColor || "black";
+    this.secondsColor = this.options?.secondsColor || "red";
+    this.minutesColor = this.options?.minutesColor || "black";
+    this.hoursColor = this.options?.hoursColor || "black";
     this.del = 0.4;
     this.siz = 45;
     this.eqf = 360 / 12;
@@ -41,7 +42,6 @@ export class Clock extends BaseCursor {
     this.han = this.siz / 6.5;
     this.ofy = 0;
     this.ofx = 0;
-    this.ofst = 0;
     this.dy = [];
     this.dx = [];
     this.zy = [];
@@ -52,11 +52,6 @@ export class Clock extends BaseCursor {
     this.tmpf = [];
     this.tmpd = [];
     this.sum = this.dateInWords().length + 12 + 3 + 4 + 5 + 1;
-    this.init();
-  }
-
-  init() {
-    super.init();
     this.context.font = "10px sans-serif";
     this.context.textAlign = "center";
     this.context.textBaseline = "middle";
@@ -131,7 +126,7 @@ export class Clock extends BaseCursor {
     const mins = time.getMinutes();
     const min = (Math.PI * (mins - 15)) / 30;
     const hrs = time.getHours();
-    const hr = (Math.PI * (hrs - 3)) / 6 + (Math.PI * parseInt(time.getMinutes())) / 360;
+    const hr = (Math.PI * (hrs - 3)) / 6 + (Math.PI * time.getMinutes()) / 360;
     this.drawDate(sec);
     this.drawFace();
     this.drawHands(hr, min, sec);
@@ -168,9 +163,5 @@ export class Clock extends BaseCursor {
       this.context.fillStyle = color;
       this.context.fillText(handArray[i].value, handArray[i].x, handArray[i].y);
     }
-  }
-
-  destroy() {
-    super.destroy();
   }
 }
