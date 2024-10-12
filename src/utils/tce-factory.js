@@ -11,61 +11,38 @@ import { Snowflake } from "../cursors/snowflake.js";
 import { SpringyEmoji } from "../cursors/springy-emoji.js";
 import { TextFlag } from "../cursors/text-flag.js";
 import { Trailing } from "../cursors/trailing.js";
+
+import { options as defaultOptions } from './default-options.js';
+
 export class TceFactory {
-	listAll() {
-		return [
-			{
-				name: 'lightning',
-				options: Lightning.getOptions()
-			},
-			{
-				name: 'bubble',
-				options: Bubble.getOptions()
-			},
-			{
-				name: 'character',
-				options: Character.getOptions()
-			},
-			{
-				name: 'clock',
-				options: Clock.getOptions()
-			},
-			{
-				name: 'emoji',
-				options: Emoji.getOptions()
-			},
-			{
-				name: 'fairy-dust',
-				options: FairyDust.getOptions()
-			},
-			{
-				name: 'fire',
-				options: Fire.getOptions()
-			},
-			{
-				name: 'following-dot',
-				options: FollowingDot.getOptions()
-			},
-			{
-				name: 'rainbow',
-				options: Rainbow.getOptions()
-			},
-			{
-				name: 'snowflake',
-				options: Snowflake.getOptions()
-			},
-			{
-				name: 'springy-emoji',
-				options: SpringyEmoji.getOptions()
-			},
-			{
-				name: 'text-flag',
-				options: TextFlag.getOptions()
-			},
-			{
-				name: 'trailing',
-				options: Trailing.getOptions()
-			}
-		];
+	constructor() {
+		this.classMap = {
+			lightning: Lightning,
+			bubble: Bubble,
+			character: Character,
+			clock: Clock,
+			emoji: Emoji,
+			fairyDust: FairyDust,
+			fire: Fire,
+			followingDot: FollowingDot,
+			rainbow: Rainbow,
+			snowflake: Snowflake,
+			springyEmoji: SpringyEmoji,
+			textFlag: TextFlag,
+			trailing: Trailing
+		};
 	}
+
+	listAll() {
+		return Object.keys(this.classMap).map(name => ({
+			name: name,
+			options: this.classMap[name].getOptions()
+		}));
+	}
+
+	getCursor(name) {
+		return this.classMap[name.toLowerCase()];
+	}
+
+	getDefaultOptions() {return defaultOptions;}
 }

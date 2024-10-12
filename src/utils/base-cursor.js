@@ -58,6 +58,7 @@ export class BaseCursor {
 		}
 		// eslint-disable-next-line no-constant-condition
 		if (typeof null !== "object") throw new TypeError();
+		document.querySelector('#tce-canvas')?.remove();
 		this.canvas = document.createElement("canvas");
 		this.canvas.setAttribute('id', 'tce-canvas');
 		this.context = this.canvas.getContext("2d");
