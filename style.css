@@ -2,105 +2,172 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
+  padding: 0;
 }
 
 body {
-  background: #fafafa;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  color: #0000ff;
+  background: linear-gradient(270deg, #00ffff, #ff00ff);
+  background-size: 400% 400%;
+  animation: animateGradient 10s ease infinite;
 }
 
-h1,
-h2,
-h3 {
+body::-webkit-scrollbar {
+  width: 16px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #ffccff;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #00ff00;
+  border: 3px solid #ff00ff;
+}
+
+h1, h2, h3 {
   margin: 0;
 }
 
 header {
   width: 100%;
   text-align: center;
+  padding: 20px;
+  background: linear-gradient(to right, #ffff00, #00ff00);
+  border-bottom: 5px double #ff0000;
 }
 
 h1 {
   font-size: 3.8rem;
-  font-family: papyrus;
   letter-spacing: 2px;
-  padding-top: 50px;
-  text-shadow: 3px 3px 0 red, -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red,
-    1px 1px 0 red;
+  text-shadow: 2px 2px #ff0000;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  animation: rainbowText 5s linear infinite;
+}
+
+@keyframes rainbowText {
+  0%   { color: hsl(0, 100%, 50%); }
+  10%  { color: hsl(36, 100%, 50%); }
+  20%  { color: hsl(72, 100%, 50%); }
+  30%  { color: hsl(108, 100%, 50%); }
+  40%  { color: hsl(144, 100%, 50%); }
+  50%  { color: hsl(180, 100%, 50%); }
+  60%  { color: hsl(216, 100%, 50%); }
+  70%  { color: hsl(252, 100%, 50%); }
+  80%  { color: hsl(288, 100%, 50%); }
+  90%  { color: hsl(324, 100%, 50%); }
+  100% { color: hsl(360, 100%, 50%); }
 }
 
 .wrapper {
-  margin: 30px;
-  padding: 30px;
-  max-width: 580px;
-  font-family: monospace;
-  text-align: justify;
-  font-size: 1.3rem;
-  line-height: 1.5rem;
-  margin: auto;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 800px;
+  text-align: center;
+  background: linear-gradient(to bottom, #ffffff, #ffccff);
+  border: 5px solid #0000ff;
+}
+
+.wrapper p {
+  margin: 10px 0;
 }
 
 .wrapper span {
   font-style: italic;
   font-weight: bold;
+  color: #ff0000;
 }
 
 .cursor {
-  padding: 30px 30px 0;
+  padding: 20px;
   width: 100%;
-  height: 400px;
   position: relative;
-  font-family: monospace;
+  font-family: 'Courier New', monospace;
 }
 
 .box {
   width: 100%;
-  height: 100%;
-  border: 3px solid black;
-  background: white;
+  border: 5px dashed #ff00ff;
+  background: linear-gradient(to bottom, #ffffff, #ccffcc);
   display: flex;
   flex-direction: column;
 }
 
 .info {
   width: 100%;
-  background: linear-gradient(90deg, hotpink, #54b2f0);
-}
-
-.center {
-  text-align: center;
-  margin: 10px;
+  background: linear-gradient(to right, #ffff00, #00ff00);
+  border-bottom: 5px solid #0000ff;
 }
 
 .name {
   font-weight: bold;
   width: 100%;
-  border-bottom: 2px solid black;
   padding: 6px 8px;
-  letter-spacing: 1.5px;
-  color: white;
+  letter-spacing: 2px;
+  color: #0000ff;
   display: flex;
   justify-content: space-between;
+  background-color: #ffccff;
 }
 
 .name a {
-  color: white;
+  color: #ff0000;
   text-decoration: none;
 }
 
 .byline {
   padding: 6px 8px;
   font-style: italic;
-  background: #f9f9f9;
-  opacity: 0.7;
-  border-bottom: 1px solid black;
+  background: #ccffcc;
+  font-size: 1.1rem;
 }
 
 .effect {
-  height: 100%;
+  height: 300px;
   position: relative;
+  background: linear-gradient(to bottom, #ccffff, #ffccff);
+}
+
+.blink {
+  animation: blinker 1.5s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.marquee {
+  font-size: 1.1rem;
+  font-weight: bold;
+  white-space: nowrap;
+  user-select: none;
+  overflow: hidden;
+  box-sizing: border-box;
+  line-height: 1.1rem;
+}
+
+.marquee p {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(-70%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes animateGradient {
+  0% { background-position: 0 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
 }
 
 .github-corner:hover .octo-arm {
@@ -108,26 +175,16 @@ h1 {
 }
 
 @keyframes octocat-wave {
-  0%,
-  100% {
-    transform: rotate(0);
-  }
-  20%,
-  60% {
-    transform: rotate(-25deg);
-  }
-  40%,
-  80% {
-    transform: rotate(10deg);
-  }
+  0%, 100% { transform: rotate(0); }
+  20%, 60% { transform: rotate(-25deg); }
+  40%, 80% { transform: rotate(10deg); }
 }
 
 @media (max-width: 500px) {
-
   .github-corner:hover .octo-arm {
     animation: none;
   }
-  
+
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }

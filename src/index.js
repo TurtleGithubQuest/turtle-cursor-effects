@@ -7,4 +7,6 @@ export { Clock } from './cursors/clock.js';
 export { FairyDust } from './cursors/fairy-dust.js';
 export { TextFlag } from './cursors/text-flag.js';
 export { FollowingDot } from './cursors/following-dot.js';
-
+export { Character } from './cursors/character.js';
+export { Emoji } from './cursors/emoji.js';
+export { Snowflake } from './cursors/snowflake.js';
