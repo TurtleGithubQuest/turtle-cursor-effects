@@ -1,22 +1,11 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as fireOptions } from '../options/fire.js';
 
 export class Fire extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
 
 		this.particles = [];
-		this.maxParticles = options.maxParticles || 300;
-		this.emissionRate = options.emissionRate || 5;
-		this.particleSize = options.particleSize || 5;
-		this.time_dilation = options.time_dilation || 1.5;
-		this.particleLifetime = options.particleLifetime || .5;
-		this.colors = options.colors || [
-			{ r: 255, g: 220, b: 0 },
-			{ r: 255, g: 165, b: 0 },
-			{ r: 255, g: 85, b: 0 },
-			{ r: 255, g: 0, b: 0 },
-		];
-		this.gravity = options.gravity || -40;
 
 		this.context.globalCompositeOperation = 'lighter';
 		this.context.filter = 'blur(2px)';
@@ -24,6 +13,8 @@ export class Fire extends BaseCursor {
 		this.prevCursorX = this.cursor.x;
 		this.prevCursorY = this.cursor.y;
 	}
+
+	static getOptions() {return fireOptions;}
 
 	onMove(x, y) {
 		const dx = x - (this.prevCursorX || x);

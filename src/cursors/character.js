@@ -1,19 +1,9 @@
-import {BaseCursor} from '../BaseCursor.js';
+import {BaseCursor} from '../utils/base-cursor.js';
+import { options as characterOptions } from '../options/character.js';
 
 export class Character extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
-
-		this.possibleCharacters = options.characters || ["h", "e", "l", "l", "o"];
-		this.colors = options.colors || [
-			"#6622CC",
-			"#A755C2",
-			"#B07C9E",
-			"#B59194",
-			"#D2A1B8",
-		];
-		this.cursorOffset = options.cursorOffset || { x: 0, y: 0 };
-		this.font = options.font || "15px serif";
 
 		this.randomPositiveOrNegativeOne = function () {
 			return Math.random() < 0.5 ? -1 : 1;
@@ -61,7 +51,7 @@ export class Character extends BaseCursor {
 		this.context.textBaseline = "middle";
 		this.context.textAlign = "center";
 	}
-
+	static getOptions() {return characterOptions;}
 	initCanvImages() {
 		this.canvImages = [];
 

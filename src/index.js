@@ -12,3 +12,7 @@ export { Emoji } from './cursors/emoji.js';
 export { Snowflake } from './cursors/snowflake.js';
 export { Lightning } from './cursors/lightning.js';
 export { Fire } from './cursors/fire.js';
+
+
+export * from './utils/color.js';
+export * from './utils/tce-factory.js';

@@ -1,18 +1,17 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as emojiOptions } from '../options/emoji.js';
 
 export class Emoji extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
 
-		this.possibleEmoji = options.emoji || ["😀", "😂", "😆", "😊"];
 		this.lastPos = { x: this.width / 2, y: this.height / 2 };
 		this.lastTimestamp = 0;
 		this.canvImages = [];
-		this.font = options.font || "21px serif";
 
 		this.initCanvImages();
 	}
-
+	static getOptions() {return emojiOptions;}
 	init() {
 		super.init();
 
@@ -24,7 +23,7 @@ export class Emoji extends BaseCursor {
 	initCanvImages() {
 		this.canvImages = [];
 
-		this.possibleEmoji.forEach((emoji) => {
+		this.emoji.forEach((emoji) => {
 			const tempCanvas = document.createElement("canvas");
 			const tempContext = tempCanvas.getContext("2d");
 			tempContext.font = this.font;

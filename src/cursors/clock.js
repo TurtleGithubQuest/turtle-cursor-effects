@@ -1,4 +1,5 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as clockOptions } from '../options/clock.js';
 
 export class Clock extends BaseCursor {
 	init() {
@@ -6,35 +7,6 @@ export class Clock extends BaseCursor {
 		const date = new Date();
 		this.day = date.getDate();
 		this.year = date.getFullYear() + 1900;
-		this.theDays = this.options?.theDays || [
-			"SUNDAY",
-			"MONDAY",
-			"TUESDAY",
-			"WEDNESDAY",
-			"THURSDAY",
-			"FRIDAY",
-			"SATURDAY",
-		];
-		this.theMonths = this.options?.theMonths || [
-			"JANUARY",
-			"FEBRUARY",
-			"MARCH",
-			"APRIL",
-			"MAY",
-			"JUNE",
-			"JULY",
-			"AUGUST",
-			"SEPTEMBER",
-			"OCTOBER",
-			"NOVEMBER",
-			"DECEMBER",
-		];
-		this.time_dilation = this.options?.time_dilation || 150;
-		this.dateColor = this.options?.dateColor || "blue";
-		this.faceColor = this.options?.faceColor || "black";
-		this.secondsColor = this.options?.secondsColor || "red";
-		this.minutesColor = this.options?.minutesColor || "black";
-		this.hoursColor = this.options?.hoursColor || "black";
 		this.del = 0.4;
 		this.siz = 45;
 		this.eqf = 360 / 12;
@@ -63,7 +35,7 @@ export class Clock extends BaseCursor {
 		}
 		this.initializeParticles();
 	}
-
+	static getOptions() {return clockOptions; }
 	dateInWords() {
 		const date = new Date();
 		return (

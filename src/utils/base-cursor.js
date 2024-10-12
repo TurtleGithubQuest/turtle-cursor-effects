@@ -1,9 +1,16 @@
+import {options as defaultOptions} from '../utils/default-options.js';
+import {OptionValue} from "./option-value.js";
 export class BaseCursor {
 	constructor(options) {
-		this.options = options || {};
-		this.element = this.options.element || document.body;
-		this.max_delta_time = this.options.max_delta_time || 0.02;
-		this.time_dilation = this.options?.time_dilation || 100;
+		const mergedOptions = { ...defaultOptions, ...this.constructor.getOptions() };
+
+		for (const key of Object.keys(mergedOptions)) {
+			const entry = options[key] ?? mergedOptions[key];
+			this[key] = (entry instanceof OptionValue && entry.value !== null)
+				? entry.value
+				: entry;
+		}
+		this.initialized = false;
 		this.width = window.innerWidth;
 		this.height = window.innerHeight;
 
@@ -22,16 +29,26 @@ export class BaseCursor {
 		this.prefersReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)"
 		);
-		if (this.options?.noConstruct !== true) {
+		if (this.noConstruct !== true) {
 			this.construct();
 		}
 	}
+	static getOptions() {return defaultOptions;}
 	construct() {
 		this.init();
-		this.bindEvents();
-		this.loop();
+		if (this.initialized) {
+			this.bindEvents();
+			this.loop();
+		}
 	}
 	init() {
+		if (typeof this.element === 'undefined') {
+			console.log(
+				"Element is undefined. Cursor effects disabled."
+			);
+			this.destroy();
+			return;
+		}
 		if (this.prefersReducedMotion.matches) {
 			console.log(
 				"This browser has prefers reduced motion turned on, so the cursor did not init"
@@ -48,11 +65,11 @@ export class BaseCursor {
 		this.canvas.style.top = "0";
 		this.canvas.style.left = "0";
 		this.canvas.style.pointerEvents = "none";
-		this.canvas.style.zIndex = this.options.zIndex ?? 100;
+		this.canvas.style.zIndex = this.zIndex;
 		this.canvas.width = this.element.clientWidth || this.width;
 		this.canvas.height = this.element.clientHeight || this.height;
-
 		this.element.appendChild(this.canvas);
+		this.initialized = true;
 	}
 	initializeCursor() {
 
@@ -133,6 +150,8 @@ export class BaseCursor {
 			cancelAnimationFrame(this.animationFrame);
 		}
 		window.removeEventListener("resize", this.onWindowResize);
-		this.element.removeEventListener("mousemove", this.onMouseMove);
+		if (this.element) {
+			this.element.removeEventListener("mousemove", this.onMouseMove);
+		}
 	}
 }

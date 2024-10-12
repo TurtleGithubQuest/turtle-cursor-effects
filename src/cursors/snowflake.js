@@ -1,16 +1,17 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as snowflakeOptions } from '../options/snowflake.js';
 
 export class Snowflake extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
 
-		this.possibleEmoji = options.emoji || ["❄️"];
 		this.canvImages = [];
-		this.font = options.font || "12px serif";
 		this.lastTime = 0;
 
 		this.initCanvImages();
 	}
+
+	static getOptions() {return snowflakeOptions;}
 
 	init() {
 		super.init();
@@ -23,7 +24,7 @@ export class Snowflake extends BaseCursor {
 	initCanvImages() {
 		this.canvImages = [];
 
-		this.possibleEmoji.forEach((emoji) => {
+		this.emoji.forEach((emoji) => {
 			const tempCanvas = document.createElement("canvas");
 			const tempContext = tempCanvas.getContext("2d");
 			tempContext.font = this.font;

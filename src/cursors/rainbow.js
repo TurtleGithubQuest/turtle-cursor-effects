@@ -1,25 +1,16 @@
-/*jshint esversion: 11 */
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as rainbowOptions } from '../options/rainbow.js';
 
 export class Rainbow extends BaseCursor {
 	init() {
 		super.init();
-		this.rawColors = this.options?.colors || [
-			"#FE0000",
-			"#FD8C00",
-			"#FFE500",
-			"#119F0B", 
-			"#0644B3",
-			"#C22EDC",
-		];
-		this.colors = this.rawColors.map(hex => this.hexToRGBObject(hex));
-		this.size = this.options?.size || 3;
-		this.particleCount = this.options?.particleCount || 750;
-		this.particleLifespan = (this.options?.particleLifespan || .25) * this.time_dilation;
-		this.particleSpacing = this.options?.particleSpacing || 1;
+		this.colors = this.colors.map(hex => this.hexToRGBObject(hex));
+		this.particleLifespan = this.particleLifespan * this.time_dilation;
 		this.particles = [];
 		this.prevCursor = { x: this.cursor.x, y: this.cursor.y };
 	}
+
+	static getOptions() {return rainbowOptions;}
 
 	update(deltaTime) {
 		this.addInterpolatedParticles(this.prevCursor, this.cursor);

@@ -1,51 +1,43 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import {options as springyEmojiOptions} from "../options/springy-emoji.js";
 
 export class SpringyEmoji extends BaseCursor {
 	constructor(options) {
 		super(options);
-		this.emoji = (options && options.emoji) || "🤪";
-		this.nDots = 7;
-		this.DELTAT = 0.01;
-		this.SEGLEN = 10;
-		this.SPRINGK = 10;
-		this.MASS = 1;
-		this.GRAVITY = 50;
-		this.RESISTANCE = 10;
-		this.STOPVEL = 0.1;
-		this.STOPACC = 0.1;
-		this.DOTSIZE = 11;
-		this.BOUNCE = 0.7;
 		this.particles = [];
-		this.emojiAsImage = null;
 
 		this.initEmoji();
 	}
 
+	static getOptions() {return springyEmojiOptions;}
+
 	initEmoji() {
-		const emojiCanvas = document.createElement('canvas');
-		const context = emojiCanvas.getContext('2d');
+		const emojiArray = this.emoji;
+		const emojiCanvasArray = emojiArray.map(emoji => {
+			const emojiCanvas = document.createElement('canvas');
+			const context = emojiCanvas.getContext('2d');
+			context.font = this.font;
+			context.textBaseline = 'middle';
+			context.textAlign = 'center';
 
-		context.font = '16px serif';
-		context.textBaseline = 'middle';
-		context.textAlign = 'center';
+			const measurements = context.measureText(emoji);
+			const ascent = measurements.actualBoundingBoxAscent || 16;
 
-		const measurements = context.measureText(this.emoji);
-		const ascent = measurements.actualBoundingBoxAscent || 16;
+			emojiCanvas.width = measurements.width;
+			emojiCanvas.height = ascent * 2;
 
-		emojiCanvas.width = measurements.width;
-		emojiCanvas.height = ascent * 2;
+			const emojiContext = emojiCanvas.getContext('2d');
+			emojiContext.font = this.font;
+			emojiContext.textBaseline = 'middle';
+			emojiContext.textAlign = 'center';
 
-		const emojiContext = emojiCanvas.getContext('2d');
-		emojiContext.font = '16px serif';
-		emojiContext.textBaseline = 'middle';
-		emojiContext.textAlign = 'center';
+			emojiContext.fillText(emoji, emojiCanvas.width / 2, ascent);
 
-		emojiContext.fillText(this.emoji, emojiCanvas.width / 2, ascent);
+			return emojiCanvas;
+		});
 
-		this.emojiAsImage = emojiCanvas;
-
-		for (let i = 0; i < this.nDots; i++) {
-			this.particles.push(new Particle(this.emojiAsImage));
+		for (let i = 0; i < emojiArray.length; i++) {
+			this.particles.push(new Particle(emojiCanvasArray[i]));
 		}
 	}
 
@@ -74,20 +66,20 @@ export class SpringyEmoji extends BaseCursor {
 				this.applySpringForce(nextParticle, particle, spring);
 			}
 
-			const resistX = -particle.velocity.x * this.RESISTANCE;
-			const resistY = -particle.velocity.y * this.RESISTANCE;
+			const resistX = -particle.velocity.x * this.resistance;
+			const resistY = -particle.velocity.y * this.resistance;
 
-			const accelX = (spring.x + resistX) / this.MASS;
-			const accelY = (spring.y + resistY) / this.MASS + this.GRAVITY;
+			const accelX = (spring.x + resistX) / this.mass;
+			const accelY = (spring.y + resistY) / this.mass + this.gravity;
 
-			particle.velocity.x += this.DELTAT * accelX * deltaTime;
-			particle.velocity.y += this.DELTAT * accelY * deltaTime;
+			particle.velocity.x += this.deltaT * accelX * deltaTime;
+			particle.velocity.y += this.deltaT * accelY * deltaTime;
 
 			if (
-				Math.abs(particle.velocity.x) < this.STOPVEL &&
-                Math.abs(particle.velocity.y) < this.STOPVEL &&
-                Math.abs(accelX) < this.STOPACC &&
-                Math.abs(accelY) < this.STOPACC
+				Math.abs(particle.velocity.x) < this.stopVel &&
+                Math.abs(particle.velocity.y) < this.stopVel &&
+                Math.abs(accelX) < this.stopAcc &&
+                Math.abs(accelY) < this.stopAcc
 			) {
 				particle.velocity.x = 0;
 				particle.velocity.y = 0;
@@ -109,16 +101,16 @@ export class SpringyEmoji extends BaseCursor {
 		const dy = particleA.position.y - particleB.position.y;
 		const len = Math.hypot(dx, dy);
 
-		if (len > this.SEGLEN) {
-			const springF = this.SPRINGK * (len - this.SEGLEN);
+		if (len > this.segLen) {
+			const springF = this.springK * (len - this.segLen);
 			spring.x += (dx / len) * springF;
 			spring.y += (dy / len) * springF;
 		}
 	}
 
 	handleBoundaries(particle, width, height) {
-		const DOTSIZE = this.DOTSIZE;
-		const BOUNCE = this.BOUNCE;
+		const DOTSIZE = this.dotSize;
+		const BOUNCE = this.bounce;
 
 		if (particle.position.y >= height - DOTSIZE - 1) {
 			if (particle.velocity.y > 0) {

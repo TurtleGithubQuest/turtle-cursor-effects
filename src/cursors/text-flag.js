@@ -1,14 +1,11 @@
-import { BaseCursor } from "../BaseCursor.js";
+import { BaseCursor } from "../utils/base-cursor.js";
+import {options as textFlagOptions} from "../options/text-flag.js";
 
 export class TextFlag extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
 
-		this.text = options.text ? " " + options.text : " Your Text Here";
-		this.color = options.color || "#000000";
-		this.font = options.font || "monospace";
-		this.textSize = options.textSize || 12;
-		this.gap = options.gap || this.textSize + 2;
+		this.text = " " + this.text;
 		this.angle = 0;
 		this.radiusX = 2;
 		this.radiusY = 5;
@@ -24,6 +21,8 @@ export class TextFlag extends BaseCursor {
 			};
 		}
 	}
+
+	static getOptions() {return textFlagOptions;}
 
 	init() {
 		super.init();

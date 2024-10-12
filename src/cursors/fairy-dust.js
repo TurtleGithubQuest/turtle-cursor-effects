@@ -1,20 +1,20 @@
-import {BaseCursor} from "../BaseCursor.js";
+import {BaseCursor} from "../utils/base-cursor.js";
+import { options as fairyDustOptions } from '../options/fairy-dust.js';
 
 export class FairyDust extends BaseCursor {
 	init() {
 		super.init();
 
-		this.possibleColors = this.options?.colors || ["#D61C59", "#E7D84B", "#1B8798"];
 		this.lastPos = { x: this.width / 2, y: this.height / 2 };
 		this.canvImages = [];
 		this.char = "*";
-		this.context.font = "21px serif";
+		this.context.font = this.font;
 		this.context.textBaseline = "middle";
 		this.context.textAlign = "center";
 
 		this.initCanvImages();
 	}
-
+	static getOptions() {return fairyDustOptions;}
 	initCanvImages() {
 		this.possibleColors.forEach((color) => {
 			let measurements = this.context.measureText(this.char);

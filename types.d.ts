@@ -2,7 +2,7 @@ export type CursorEffectResult = {
     destroy(): void;
 }
 
-type DefaultOptions = {
+export type DefaultOptions = {
     readonly element?: HTMLElement;
 }
 
@@ -77,15 +77,16 @@ export type TrailingCursorOptions = {
     readonly baseImageSrc?: number;
 } & DefaultOptions;
 
-export function bubbleCursor(options?: BubbleCursorOptions): CursorEffectResult;
-export function characterCursor(options?: CharacterCursorOptions): CursorEffectResult;
-export function clockCursor(options?: ClockCursorOptions): CursorEffectResult;
-export function emojiCursor(options?: EmojiCursorOptions): CursorEffectResult;
-export function fairyDustCursor(options?: FairyDustCursorOptions): CursorEffectResult;
-export function followingDotCursor(options?: FollowingDotCursorOptions): CursorEffectResult;
-export function ghostCursor(options?: GhostCursorOptions): CursorEffectResult;
-export function rainbowCursor(options?: RainbowCursorOptions): CursorEffectResult;
-export function snowflakeCursor(options?: SnowflakeCursorOptions): CursorEffectResult;
-export function springyEmojiCursor(options?: SpringyEmojiCursorOptions): CursorEffectResult;
+export function bubble(options?: BubbleCursorOptions): CursorEffectResult;
+export function character(options?: CharacterCursorOptions): CursorEffectResult;
+export function clock(options?: ClockCursorOptions): CursorEffectResult;
+export function emoji(options?: EmojiCursorOptions): CursorEffectResult;
+export function fairyDust(options?: FairyDustCursorOptions): CursorEffectResult;
+export function followingDot(options?: FollowingDotCursorOptions): CursorEffectResult;
+export function rainbow(options?: RainbowCursorOptions): CursorEffectResult;
+export function snowflake(options?: SnowflakeCursorOptions): CursorEffectResult;
+export function springyEmoji(options?: SpringyEmojiCursorOptions): CursorEffectResult;
 export function textFlag(options?: TextFlagOptions): CursorEffectResult;
-export function trailingCursor(options?: TrailingCursorOptions): CursorEffectResult;
+export function trailing(options?: TrailingCursorOptions): CursorEffectResult;
+export function lightning(options?: DefaultOptions): CursorEffectResult;
+export function fire(options?: DefaultOptions): CursorEffectResult;

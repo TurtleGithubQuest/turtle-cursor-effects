@@ -1,21 +1,15 @@
-import { BaseCursor } from '../BaseCursor.js';
-
+import { BaseCursor } from '../utils/base-cursor.js';
+import {options as lightningOptions} from '../options/lightning.js';
 export class Lightning extends BaseCursor {
 	constructor(options = {}) {
 		super(options);
 
 		this.lightningBolts = [];
-		this.color = options.color || 'rgba(255, 255, 255, 0.8)';
-		this.lineWidth = options.lineWidth || 1;
-		this.lifetime = options.lifetime || 0.2;
-		this.maxSegments = options.maxSegments || 3;
-		this.maxOffset = options.maxOffset || 75;
-		this.time_dilation = options.time_dilation || 1;
-
-		this.targetSelector = options.targetSelector || '*';
 		this.targetElements = [];
 		this.collectTargetElements();
 	}
+
+	static getOptions() {return lightningOptions;}
 
 	// Collect elements that can be targets for lightning
 	collectTargetElements() {

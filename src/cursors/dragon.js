@@ -1,12 +1,11 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
 import { head as dragonHead } from '../images/dragon/head.js';
+import { options as dragonOptions } from '../options/dragon.js';
 
 export class Dragon extends BaseCursor {
 	constructor(options) {
 		super(options);
 
-		this.dragonLength = options?.dragonLength || 8;
-		this.particleSize = options?.particleSize || 40;
 		this.segments = [];
 		this.prevCursor = { x: this.cursor.x, y: this.cursor.y };
 		this.bodyColor = options?.bodyColor || '#36454F';
@@ -21,7 +20,7 @@ export class Dragon extends BaseCursor {
 			this.loop();
 		});
 	}
-
+	static getOptions() {return dragonOptions;}
 	async loadImages() {
 		const loadImage = (img, src) =>
 			new Promise((resolve, reject) => {

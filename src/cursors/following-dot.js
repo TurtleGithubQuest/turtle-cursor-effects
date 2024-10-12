@@ -1,20 +1,17 @@
-import { BaseCursor } from '../BaseCursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
 import {interpolateColors} from "../utils/color.js";
+import { options as followingDotOptions } from '../options/following-dot.js';
 
 export class FollowingDot extends BaseCursor {
 
 	init() {
 		super.init();
 
-		const colors = this.options?.color || ['red', 'orange', 'blue'];
-		this.rect = this.options?.rect || false;
-		this.colors = Array.isArray(colors) ? colors : [colors];
+		this.colors = Array.isArray(this.colors) ? this.colors : [this.color];
 		this.colorIndex = 0;
 		this.colorProgress = 0;
-		this.colorTransitionSpeed = (this.options.colorTransitionSpeed || 1)/100;
+		this.colorTransitionSpeed = (this.colorTransitionSpeed)/100;
 
-		this.lag = this.options?.lag || 5;
-		this.size = this.options?.size || 12;
 		this.dot = new Dot(
 			this.width / 2,
 			this.height / 2,
@@ -23,7 +20,7 @@ export class FollowingDot extends BaseCursor {
 			this.colors[0]
 		);
 	}
-
+	static getOptions() {return followingDotOptions;}
 	update(deltaTime) {
 		this.context.clearRect(0, 0, this.width, this.height);
 

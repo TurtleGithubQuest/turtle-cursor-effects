@@ -2,7 +2,7 @@ new cursoreffects.Trailing({ element: document.querySelector("#trailing")});
 new cursoreffects.SpringyEmoji({ element: document.querySelector("#springs")});
 new cursoreffects.Rainbow({ element: document.querySelector("#rainbow")});
 new cursoreffects.Bubble({ element: document.querySelector("#bubbles") });
-new cursoreffects.Dragon({ element: document.querySelector("#dragon") });
+new cursoreffects.Dragon({ element: document.querySelector("#dragon"), dragonLength: 12 });
 new cursoreffects.Clock({ element: document.querySelector("#clock") });
 new cursoreffects.FairyDust({ element: document.querySelector("#fairyDust") });
 new cursoreffects.TextFlag({ element: document.querySelector("#textFlag"), text: 'Like & Subscribe', time_dilation: 80 });

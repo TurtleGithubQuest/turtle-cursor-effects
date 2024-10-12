@@ -1,29 +1,19 @@
-import { BaseCursor } from '../BaseCursor.js';
-import { cursor as cursorBody } from '../images/trailing/cursor.js';
+import { BaseCursor } from '../utils/base-cursor.js';
+import { options as trailingOptions } from "../options/trailing.js";
 
 export class Trailing extends BaseCursor {
 	constructor(options) {
 		super(options);
 
-		this.totalParticles = options?.particles || 15;
-		this.rate = options?.rate || 0.4;
-		this.ghost = options?.ghost || false;
-
-		this.randomDelay = options?.randomDelay || false;
-		this.minDelay = options?.minDelay || 100;
-		this.maxDelay = options?.maxDelay || 500;
-		this.lifeSpan = options?.lifeSpan || 400;
-		this.baseImageSrc = options?.baseImageSrc || cursorBody;
-		this.particles = [];
-		this.lastTime = 0;
-
 		this.baseImage = new Image();
 		this.baseImage.src = this.baseImageSrc;
 	}
 
+	static getOptions() {return trailingOptions;}
+
 	initializeCursor() {
-		if (!this.ghost) {
-			for (let i = 0; i < this.totalParticles; i++) {
+		if (this.ghost) {
+			for (let i = 0; i < this.particleCount; i++) {
 				this.addParticle(this.cursor.x, this.cursor.y, this.baseImage);
 			}
 		}
@@ -34,9 +24,8 @@ export class Trailing extends BaseCursor {
 	}
 
 	onMove(x, y) {
-		if (this.ghost) {
+		if (!this.ghost) {
 			const currentTime = Date.now();
-
 			if (this.randomDelay) {
 				if (!this.lastTimeParticleAdded || currentTime - this.lastTimeParticleAdded >= this.getDelay()) {
 					this.lastTimeParticleAdded = currentTime;
@@ -62,7 +51,7 @@ export class Trailing extends BaseCursor {
 		}
 	}
 
-	updateGhostParticles(deltaTime) {
+	updateTrailingParticles(deltaTime) {
 		if (this.particles.length === 0) {
 			return;
 		}
@@ -78,20 +67,23 @@ export class Trailing extends BaseCursor {
 		}
 	}
 
-	updateTrailingParticles(deltaTime) {
+	updateGhostParticles(deltaTime) {
+		if (this.particles.length === 0) {
+			return;
+		}
+
 		let x = this.cursor.x;
 		let y = this.cursor.y;
-
 		for (let i = 0; i < this.particles.length; i++) {
 			let particle = this.particles[i];
 			let nextParticle = this.particles[i + 1] || this.particles[0];
 
+			x += ((nextParticle.position.x - particle.position.x) * this.rate * deltaTime);
+			y += ((nextParticle.position.y - particle.position.y) * this.rate * deltaTime);
+
 			particle.position.x = x;
 			particle.position.y = y;
 			particle.draw(this.context);
-
-			x += (nextParticle.position.x - particle.position.x) * this.rate;
-			y += (nextParticle.position.y - particle.position.y) * this.rate;
 		}
 	}
 }
