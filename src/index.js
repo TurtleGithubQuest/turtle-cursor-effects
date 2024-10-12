@@ -10,3 +10,5 @@ export { FollowingDot } from './cursors/following-dot.js';
 export { Character } from './cursors/character.js';
 export { Emoji } from './cursors/emoji.js';
 export { Snowflake } from './cursors/snowflake.js';
+export { Lightning } from './cursors/lightning.js';
+export { Fire } from './cursors/fire.js';

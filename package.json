@@ -2,7 +2,7 @@
   "name": "turtle-cursor-effects",
   "type": "module",
   "description": "Old-school cursor effects for your browser built in modern JavaScript.",
-  "version": "1.0.15b",
+  "version": "1.0.16",
   "main": "./dist/cjs.cjs",
   "module": "./dist/esm.js",
   "browser": "./dist/turtle-cursor-effects.umd.js",

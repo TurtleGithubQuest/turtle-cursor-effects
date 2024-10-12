@@ -11,3 +11,5 @@ new cursoreffects.FollowingDot({ element: document.querySelector("#following")})
 new cursoreffects.Character({ element: document.querySelector("#character")});
 new cursoreffects.Emoji({ element: document.querySelector("#emoji")});
 new cursoreffects.Snowflake({ element: document.querySelector("#snowflake")});
+new cursoreffects.Lightning({ element: document.querySelector("#lightning")});
+new cursoreffects.Fire({ element: document.querySelector("#fire")});
